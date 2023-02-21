@@ -37,4 +37,12 @@ public class ProfessorService {
     public void deleteProfessor(String dni) {
         professorsList.removeIf(professor -> professor.getDni().equals(dni));
     }
+
+    public boolean existsProfessor(String dni) {
+        for(Professor p : professorsList){
+            if(p.getDni().equals(dni))
+                return true;
+        }
+        return false;
+    }
 }
