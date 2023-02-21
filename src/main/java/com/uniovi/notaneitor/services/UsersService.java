@@ -43,4 +43,9 @@ public class UsersService {
     public void deleteUser(Long id) {
         usersRepository.deleteById(id);
     }
+
+    public void addUserFromModify(User user) {
+        user.setPassword(user.getPassword());
+        usersRepository.save(user);
+    }
 }
