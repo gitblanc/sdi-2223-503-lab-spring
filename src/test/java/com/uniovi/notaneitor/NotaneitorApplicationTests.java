@@ -57,7 +57,7 @@ class NotaneitorApplicationTests {
     //Al finalizar la última prueba
     @AfterAll
     static public void end() {
-    //Cerramos el navegador al finalizar las pruebas
+        //Cerramos el navegador al finalizar las pruebas
         driver.quit();
     }
 
@@ -66,6 +66,7 @@ class NotaneitorApplicationTests {
     void PR01A() {
         PO_HomeView.checkWelcomeToPage(driver, PO_Properties.getSPANISH());
     }
+
     @Test
     @Order(2)
     void PR01B() {
@@ -81,6 +82,7 @@ class NotaneitorApplicationTests {
     public void PR02() {
         PO_HomeView.clickOption(driver, "signup", "class", "btn btn-primary");
     }
+
     //PR03. Opción de navegación. Pinchar en el enlace Identifícate en la página home
     @Test
     @Order(4)
@@ -96,28 +98,68 @@ class NotaneitorApplicationTests {
                 PO_Properties.getSPANISH(), PO_Properties.getENGLISH());
     }
 
-    @Test
-    @Order(5)
-    void PR05(){}
-
+    //PR05. Prueba del formulario de registro. registro con datos correctos
     @Test
     @Order(6)
-    void PR06(){}
+    public void PR05() {
+        //Vamos al formulario de registro
+        PO_HomeView.clickOption(driver, "signup", "class", "btn btn-primary");
+        //Rellenamos el formulario.
+        PO_SignUpView.fillForm(driver, "77777778A", "Josefo", "Perez", "77777", "77777");
+        //Comprobamos que entramos en la sección privada y nos nuestra el texto a buscar
+        String checkText = "Notas del usuario";
+        List<WebElement> result = PO_View.checkElementBy(driver, "text", checkText);
+        Assertions.assertEquals(checkText, result.get(0).getText());
+    }
+
+    //PR06A. Prueba del formulario de registro. DNI repetido en la BD
+    // Propiedad: Error.signup.dni.duplicate
+    @Test
+    @Order(7)
+    public void PR06A() {
+        PO_HomeView.clickOption(driver, "signup", "class", "btn btn-primary");
+        PO_SignUpView.fillForm(driver, "99999990A", "Josefo", "Perez", "77777", "77777");
+        List<WebElement> result = PO_SignUpView.checkElementByKey(driver, "Error.signup.dni.duplicate",
+                PO_Properties.getSPANISH());
+        //Comprobamos el error de DNI repetido.
+        String checkText = PO_HomeView.getP().getString("Error.signup.dni.duplicate",
+                PO_Properties.getSPANISH());
+        Assertions.assertEquals(checkText, result.get(0).getText());
+    }
+
+    //PR06B. Prueba del formulario de registro. Nombre corto.
+    // Propiedad: Error.signup.dni.length
+    @Test
+    @Order(8)
+    public void PR06B() {
+        PO_HomeView.clickOption(driver, "signup", "class", "btn btn-primary");
+        PO_SignUpView.fillForm(driver, "99999990B", "Jose", "Perez", "77777", "77777");
+        List<WebElement> result = PO_SignUpView.checkElementByKey(driver, "Error.signup.name.length",
+                PO_Properties.getSPANISH());
+        //Comprobamos el error de Nombre corto de nombre corto .
+        String checkText = PO_HomeView.getP().getString("Error.signup.name.length",
+                PO_Properties.getSPANISH());
+        Assertions.assertEquals(checkText, result.get(0).getText());
+    }
 
     @Test
     @Order(7)
-    void PR07(){}
+    void PR07() {
+    }
 
     @Test
     @Order(8)
-    void PR08(){}
+    void PR08() {
+    }
 
     @Test
     @Order(9)
-    void PR09(){}
+    void PR09() {
+    }
 
     @Test
     @Order(10)
-    void PR010(){}
+    void PR010() {
+    }
 
 }
